@@ -52,7 +52,7 @@ const userSchema = new Schema(
 userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) return next();
 
-  this.password = bcrypt.hash(this.password, 10);
+  this.password =await bcrypt.hash(this.password, 10);
   next();
 
   this.password = bcrypt;
@@ -65,7 +65,7 @@ userSchema.methods.isPasswordCorrect = async function (password) {
 
 // generate the access token
 
-userSchema.methods.generatedAccessToken = function () {
+userSchema.methods.generateAccessToken = function () {
   return jwt.sign(
     {
       _id: this._id,
@@ -81,7 +81,7 @@ userSchema.methods.generatedAccessToken = function () {
 };
 
 // generate the refresh token
-userSchema.methods.generatedRefreshToken = function () {
+userSchema.methods.generateRefreshToken = function () {
   return jwt.sign(
     {
       _id: this._id,
